@@ -1,4 +1,4 @@
-from Graph.graph_helper import buildAdjList, prettyPrint
+from Graph.graph_helper import buildAdjList, GraphVisualization
 
 def detectCycle(adj_list):
     visited = set()

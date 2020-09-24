@@ -1,4 +1,4 @@
-from Graph.graph_helper import buildAdjList, prettyPrint
+from Graph.graph_helper import buildAdjList, GraphVisualization
 
 
 def helper(adj_list, source, target, visited):

@@ -1,46 +1,32 @@
-from Graph.graph_helper import buildAdjList, prettyPrint
+from Graph.graph_helper import buildAdjList, GraphVisualization
 from collections import deque
 
 def BFS(adj_list, source, target):
-    queue = deque()
-    queue.append(source)
+    queue = deque([source])
     visited = set()
     while queue:
         node = queue.popleft()
-        if node == target:
+        if node in visited:
+            continue
+        if node is target:
             return True
-        if node not in visited:
-            visited.add(node)
-            for neighbor in adj_list[node]:
-                queue.append(neighbor)
+        visited.add(node)
+        for neighbor in adj_list[node]:
+            queue.append(neighbor)
     return False
 
-
-
 if __name__ == '__main__':
-    love_connections = [("Hermia", "Lysander"), ("Demetrius", "Lysander"),
-                        ("Helena", "Demetrius"), ("Titania", "Oberon"), ("Oberon", "Titania"),
-                        ("Puck", "Puck"), ("Lysander", "Puck"), ("Helena", "Titania"), ("Hermia", "Puck"), ("Puck", "Helena")]
+    edges = [("A", "B"), ("D", "B"), ("C", "D"), ("E", "F"), ("F", "E"),
+             ("G", "G"), ("B", "G"), ("C", "E"), ("A", "G"), ("G", "C")]
 
-    #directed adjacency list
-    adj_list = buildAdjList(love_connections)
+    #Visualize the map
+    graphVisualizer = GraphVisualization(edges)
+    graphVisualizer.visualize()
 
-    #Lysander: [Helena, Puck]
-    #Hermia: [Lysander]
-    #Demetrius: [Lysander]
-    #Helena: [Demetrius, Titania]
-    #Titania: [Oberon]
-    #Oberon: [Titania]
-    #Puck: [Puck]
+    #Init the adjacency list.
+    adj_list = buildAdjList(edges)
 
-    #visited: Hermia, Puck, Lysander, Helena, Titania, Demetrius
+    #Call BFS on some nodes.
+    print(BFS(adj_list, "B", "F"))
+    print(BFS(adj_list, "D", "F"))
 
-    #0 Hermia
-    #1 Puck, Lysander
-    #2 Helena
-    #3 Titania, Demetrius
-    #4 Oberon
-
-    print(BFS(adj_list, "Hermia", "Oberon"))
-
-    # prettyPrint(love_connections)
