@@ -1,42 +1,33 @@
 from Graph.graph_helper import buildAdjList, GraphVisualization
 
 
-def helper(adj_list, source, target, visited):
+def DFSHelper(adj_list, source, target, visited):
     #base case
-    if source == target:
+    if source is target:
         return True
-    if source in visited:
+    if source in visited: #already visited this position
         return False
     visited.add(source)
     for neighbor in adj_list[source]:
-        if helper(adj_list, neighbor, target, visited):
+        if DFSHelper(adj_list, neighbor, target, visited):
             return True
     return False
 
 def DFS(adj_list, source, target):
     visited = set()
-    return helper(adj_list, source, target, visited)
-
-
+    return DFSHelper(adj_list, source, target, visited)
 
 if __name__ == '__main__':
-    love_connections = [("Lysander", "Helena"), ("Hermia", "Lysander"), ("Demetrius", "Lysander"),
-                        ("Helena", "Demetrius"), ("Titania", "Oberon"), ("Oberon", "Titania"),
-                        ("Puck", "Puck"), ("Lysander", "Puck"), ("Helena", "Titania")]
+    edges = [("A", "B"), ("D", "B"), ("C", "D"), ("E", "F"), ("F", "E"),
+             ("G", "G"), ("B", "G"), ("C", "E"), ("A", "G"), ("G", "C")]
 
-    #directed adjacency list
-    adj_list = buildAdjList(love_connections)
+    #Visualize the map
+    graphVisualizer = GraphVisualization(edges)
+    graphVisualizer.visualize()
 
-    #source 0
-    #N+1
-    edges = []
-    N = 5
-    for i in range(N):
-        for j in range(N):
-            edges.append((i,j))
-    edges.append((N+1,N+1))
-    # prettyPrint(edges)
+    #Init the adjacency list.
+    adj_list = buildAdjList(edges)
 
-
-    #graph_repr = prettyPrint(love_connections)
-    print(DFS(adj_list, "Hermia", "Oberon"))
+    #Call BFS on some nodes.
+    print(DFS(adj_list, "B", "F"))
+    print(DFS(adj_list, "D", "F"))

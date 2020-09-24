@@ -4,42 +4,39 @@ def detectCycle(adj_list):
     visited = set()
     for node in adj_list:
         if node not in visited:
-            if DFS(node, set(), visited, adj_list):
+            if DFS(adj_list, node, set(), visited):
                 return True
     return False
 
-
-def DFS(cur_node, cur_path, visited, adj_list):
-    #base case
-    if cur_node in cur_path: #found a cycle
+def DFS(adj_list, node, cur_path, visited):
+    #if node in the cur_path, found a cycle, return True
+    if node in cur_path:
         return True
-    if cur_node in visited: # cur_node has already been checked and doesn't have cycle
+    #if node in visited, already checked this node, not found a cycle
+    if node in visited:
         return False
 
-    cur_path.add(cur_node)
-    visited.add(cur_node)
-    for neighbor in adj_list[cur_node]:
-        if neighbor == cur_node:
-            continue
-        if DFS(neighbor, cur_path, visited, adj_list):
+    cur_path.add(node)
+    visited.add(node)
+    for neighbor in adj_list[node]:
+        if DFS(adj_list, neighbor, cur_path, visited):
             return True
-
-    #backtrack
-    cur_path.remove(cur_node)
+    #backtrack the current path
+    cur_path.remove(node)
     return False
-
 
 
 
 if __name__ == '__main__':
-    love_connections = [("Hermia", "Lysander"), ("Demetrius", "Lysander"), ("Oberon", "Titania"),
-                        ("Puck", "Puck"), ("Lysander", "Puck"), ("Helena", "Titania"), ("Hermia", "Puck"), ("Puck", "Helena"),
-                        ("Titania", "Titania"), ("Helena", "Hermia")]
+    edges = [("A", "B"), ("D", "B"), ("C", "D"), ("E", "F"), ("B", "G"),
+             ("G", "G"), ("C", "E"), ("A", "G"), ("G", "C")]
 
-    #start Hermia
-    #cur path: Hermia, Lysander, Puck, Demetrius
-    #directed adjacency list
-    adj_list = buildAdjList(love_connections)
+    #Visualize the map
+    graphVisualizer = GraphVisualization(edges)
+    graphVisualizer.visualize()
 
-    # prettyPrint(love_connections)
+    #Init the adjacency list.
+    adj_list = buildAdjList(edges)
+
+    #Detect if can find a cycle.
     print(detectCycle(adj_list))
