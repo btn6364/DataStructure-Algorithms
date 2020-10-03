@@ -1,12 +1,21 @@
 #pip install networkx
 import networkx as nx
 import matplotlib.pyplot as plt
+from collections import defaultdict
 
 def buildAdjList(edges):
+    adj_list = defaultdict(list)
+    for source, target in edges:
+        adj_list[source].append(target)
+    return adj_list
+
+def buildDiGraph(edges):
     adj_list = dict()
     for source, target in edges:
         if source not in adj_list:
             adj_list[source] = []
+        if target not in adj_list:
+            adj_list[target] = []
         adj_list[source].append(target)
     return adj_list
 
