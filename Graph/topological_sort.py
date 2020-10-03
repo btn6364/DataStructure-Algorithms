@@ -1,7 +1,9 @@
 from Graph.graph_helper import buildDiGraph, GraphVisualization
 
-
-def topologicalSort(graph):
+#########################################
+# Recursion version of Top sort.
+#########################################
+def topologicalSortRecursion(graph):
     #O(E + V) runtime | O(V) space
     visited = set()
     stack = []
@@ -20,14 +22,51 @@ def _topologicalSort(graph, node, visited, stack):
     stack.append(node)
 
 
+###########################################
+# Iterative version of Top Sort.
+###########################################
+from collections import deque, defaultdict
+def countPreq(graph):
+    preqs = defaultdict(int)
+    for node in graph:
+        for neighbor in graph[node]:
+            preqs[neighbor] += 1
+    return preqs
+
+def topologicalSortIterative(graph):
+    #Count the number of preq for each node.
+    preqs = countPreq(graph)
+
+    print(preqs)
+    #Init the queue with all nodes with 0 prerequisite.
+    queue = deque()
+    for node in graph:
+        if preqs[node] == 0:
+            queue.append(node)
+
+    #Start top sort.
+    result = []
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+        for neighbor in graph[node]:
+            preqs[neighbor] -= 1
+            if preqs[neighbor] == 0:
+                queue.append(neighbor)
+    return result
+
+
 if __name__ == '__main__':
-    edges = [("A", "C"), ("B", "C"), ("B", "D"), ("C", "E"), ("E", "H"),
-             ("E", "F"), ("F", "G"), ("D", "F")]
+    edges = [("A", "B"), ("C", "D"), ("B", "E"), ("D", "E")]
 
     # Build the graph
     graph = buildDiGraph(edges)
-    print(graph)
-    print(topologicalSort(graph))
+
+    #Top sort recursion
+    print(topologicalSortRecursion(graph))
+
+    #Top sort iteration
+    print(topologicalSortIterative(graph))
 
     # Visualize the map
     graphVisualizer = GraphVisualization(edges)
