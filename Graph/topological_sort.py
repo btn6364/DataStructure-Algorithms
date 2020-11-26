@@ -60,8 +60,8 @@ if __name__ == '__main__':
     edges = [("A", "B"), ("C", "D"), ("B", "E"), ("D", "E")]
 
     # Build the graph
+    # graph = buildDiGraph(edges)
     graph = buildDiGraph(edges)
-
     #Top sort recursion
     print(topologicalSortRecursion(graph))
 
